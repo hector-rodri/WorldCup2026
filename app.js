@@ -1,3 +1,7 @@
+function verSeccion(nombre) {
+
+}
+
 var url = "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
 
 var partidos = [];

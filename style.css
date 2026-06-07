@@ -9,9 +9,26 @@ h1 {
   color: #006633;
 }
 
+#menu {
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 8px 14px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
 #buscar {
   padding: 8px;
   width: 250px;
+  margin-bottom: 15px;
+  border: 1px solid #999;
+}
+
+#pais {
+  padding: 8px;
+  width: 200px;
   margin-bottom: 15px;
   border: 1px solid #999;
 }
@@ -30,4 +47,8 @@ h1 {
 .info {
   color: #666;
   font-size: 14px;
+}
+
+img {
+  vertical-align: middle;
 }

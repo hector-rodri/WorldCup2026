@@ -8,10 +8,31 @@
 </head>
 <body>
   <h1>Mundial 2026</h1>
-  <p>Calendario de los partidos del Mundial.</p>
-  <input type="text" id="buscar" placeholder="Buscar equipo...">
 
-  <div id="partidos">Cargando partidos...</div>
+  <div id="menu">
+    <button onclick="verSeccion('partidos')">Partidos</button>
+    <button onclick="verSeccion('jugadores')">Jugadores</button>
+    <button onclick="verSeccion('equipos')">Equipos</button>
+  </div>
+
+  <div id="seccionPartidos">
+    <h2>Partidos</h2>
+    <input type="text" id="buscarPartido" placeholder="Buscar equipo...">
+    <div id="partidos">Cargando partidos...</div>
+  </div>
+
+  <div id="seccionJugadores">
+    <h2>Jugadores</h2>
+    <p>Escribe un pais EN INGLES (Spain, Argentina, Brazil, France...)</p>
+    <input type="text" id="pais" placeholder="Spain">
+    <button id="btnBuscarJugadores">Buscar</button>
+    <div id="jugadores"></div>
+  </div>
+
+  <div id="seccionEquipos">
+    <h2>Equipos</h2>
+    <div id="equipos">Cargando equipos...</div>
+  </div>
 
   <script src="app.js"></script>
 </body>

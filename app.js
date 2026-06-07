@@ -24,3 +24,19 @@ function mostrar(lista) {
       "</div>";
   }
 }
+
+var buscar = document.getElementById("buscar");
+
+buscar.addEventListener("keyup", function() {
+  var texto = buscar.value.toLowerCase();
+  var encontrados = [];
+
+  for (var i = 0; i < partidos.length; i++) {
+    var p = partidos[i];
+    if (p.team1.toLowerCase().indexOf(texto) != -1 || p.team2.toLowerCase().indexOf(texto) != -1) {
+      encontrados.push(p);
+    }
+  }
+
+  mostrar(encontrados);
+});

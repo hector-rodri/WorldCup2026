@@ -201,7 +201,7 @@ document.getElementById("btnLimpiarFiltrosEquipos").addEventListener("click", fu
 
 var clave = "123";
 
-var botonJugadores = document.getElementById("btnJugadores");
+var botonJugadores = document.getElementById("btnBuscarJugadores");
 var pais = document.getElementById("pais");
 
 botonJugadores.addEventListener("click", function() {

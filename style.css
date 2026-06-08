@@ -19,11 +19,42 @@ button {
   cursor: pointer;
 }
 
-#buscar {
+#buscarPartido {
   padding: 8px;
   width: 250px;
-  margin-bottom: 15px;
   border: 1px solid #999;
+}
+
+#barraPartidos {
+  margin-bottom: 10px;
+}
+
+#panelFiltros {
+  display: none;
+  background-color: #e8f5e9;
+  border: 1px solid #aaa;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+#panelFiltros label {
+  margin-right: 15px;
+}
+
+#barraEquipos {
+  margin-bottom: 10px;
+}
+
+#panelFiltrosEquipos {
+  display: none;
+  background-color: #e8f5e9;
+  border: 1px solid #aaa;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+#panelFiltrosEquipos label {
+  margin-right: 15px;
 }
 
 #pais {

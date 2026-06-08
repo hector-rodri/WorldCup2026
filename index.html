@@ -17,7 +17,15 @@
 
   <div id="seccionPartidos">
     <h2>Partidos</h2>
-    <input type="text" id="buscarPartido" placeholder="Buscar equipo...">
+    <div id="barraPartidos">
+      <input type="text" id="buscarPartido" placeholder="Buscar equipo...">
+      <button id="btnFiltrar">Filtrar</button>
+    </div>
+    <div id="panelFiltros">
+      <label>Fecha: <input type="date" id="filtroFecha"></label>
+      <label>Estadio: <select id="filtroEstadio"><option value="">Todos los estadios</option></select></label>
+      <button id="btnLimpiarFiltros">Limpiar</button>
+    </div>
     <div id="partidos">Cargando partidos...</div>
   </div>
 
@@ -31,6 +39,14 @@
 
   <div id="seccionEquipos">
     <h2>Equipos</h2>
+    <div id="barraEquipos">
+      <button id="btnFiltrarEquipos">Filtrar</button>
+    </div>
+    <div id="panelFiltrosEquipos">
+      <label>País: <select id="filtroPais"><option value="">Todos los países</option></select></label>
+      <label>Grupo: <select id="filtroGrupo"><option value="">Todos los grupos</option></select></label>
+      <button id="btnLimpiarFiltrosEquipos">Limpiar</button>
+    </div>
     <div id="equipos">Cargando equipos...</div>
   </div>
 

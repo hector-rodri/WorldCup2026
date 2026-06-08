@@ -28,8 +28,26 @@ fetch(url)
   })
   .then(function(datos) {
     partidos = datos.matches;
+    filtrarEstadios();
     mostrar(partidos);
   });
+
+function filtrarEstadios() {
+  var select = document.getElementById("filtroEstadio");
+  var estadios = [];
+  for (var i = 0; i < partidos.length; i++) {
+    if (estadios.indexOf(partidos[i].ground) == -1) {
+      estadios.push(partidos[i].ground);
+    }
+  }
+  estadios.sort();
+  for (var i = 0; i < estadios.length; i++) {
+    var opt = document.createElement("option");
+    opt.value = estadios[i];
+    opt.textContent = estadios[i];
+    select.appendChild(opt);
+  }
+}
 
 function mostrar(lista) {
   var div = document.getElementById("partidos");
@@ -45,24 +63,50 @@ function mostrar(lista) {
   }
 }
 
-var buscar = document.getElementById("buscar");
+var buscar = document.getElementById("buscarPartido");
 
-buscar.addEventListener("keyup", function() {
+buscar.addEventListener("keyup", aplicarFiltros);
+
+var btnFiltrar = document.getElementById("btnFiltrar");
+var panelFiltros = document.getElementById("panelFiltros");
+
+btnFiltrar.addEventListener("click", function() {
+  var visible = panelFiltros.style.display == "block";
+  panelFiltros.style.display = visible ? "none" : "block";
+});
+
+document.getElementById("filtroFecha").addEventListener("change", aplicarFiltros);
+document.getElementById("filtroEstadio").addEventListener("change", aplicarFiltros);
+
+document.getElementById("btnLimpiarFiltros").addEventListener("click", function() {
+  document.getElementById("filtroFecha").value = "";
+  document.getElementById("filtroEstadio").value = "";
+  buscar.value = "";
+  mostrar(partidos);
+});
+
+function aplicarFiltros() {
   var texto = buscar.value.toLowerCase();
-  var encontrados = [];
+  var fecha = document.getElementById("filtroFecha").value;
+  var estadio = document.getElementById("filtroEstadio").value;
+  var resultado = [];
 
   for (var i = 0; i < partidos.length; i++) {
     var p = partidos[i];
-    if (p.team1.toLowerCase().indexOf(texto) != -1 || p.team2.toLowerCase().indexOf(texto) != -1) {
-      encontrados.push(p);
+    var coincideTexto = p.team1.toLowerCase().indexOf(texto) != -1 || p.team2.toLowerCase().indexOf(texto) != -1;
+    var coincideFecha = fecha == "" || p.date == fecha;
+    var coincideEstadio = estadio == "" || p.ground == estadio;
+    if (coincideTexto && coincideFecha && coincideEstadio) {
+      resultado.push(p);
     }
   }
 
-  mostrar(encontrados);
-});
+  mostrar(resultado);
+}
 
 
 var equiposCargados = false;
+var equiposData = [];
 
 function cargarEquipos() {
   if (equiposCargados == true) {
@@ -74,20 +118,85 @@ function cargarEquipos() {
       return respuesta.json();
     })
     .then(function(equipos) {
-      var div = document.getElementById("equipos");
-      div.innerHTML = "";
-
-      for (var i = 0; i < equipos.length; i++) {
-        var e = equipos[i];
-        div.innerHTML += "<div class='partido'>" +
-          "<div class='equipos'>" + e.flag_icon + " " + e.name + "</div>" +
-          "<div class='info'>Grupo " + e.group + " - " + e.confed + "</div>" +
-          "</div>";
-      }
-
+      equiposData = equipos;
+      poblarFiltrosEquipos();
+      mostrarEquipos(equiposData);
       equiposCargados = true;
     });
 }
+
+function poblarFiltrosEquipos() {
+  var selectPais = document.getElementById("filtroPais");
+  var selectGrupo = document.getElementById("filtroGrupo");
+  var grupos = [];
+
+  for (var i = 0; i < equiposData.length; i++) {
+    var e = equiposData[i];
+
+    var optPais = document.createElement("option");
+    optPais.value = e.name;
+    optPais.textContent = e.flag_icon + " " + e.name;
+    selectPais.appendChild(optPais);
+
+    if (grupos.indexOf(e.group) == -1) {
+      grupos.push(e.group);
+    }
+  }
+
+  grupos.sort();
+  for (var i = 0; i < grupos.length; i++) {
+    var opt = document.createElement("option");
+    opt.value = grupos[i];
+    opt.textContent = "Grupo " + grupos[i];
+    selectGrupo.appendChild(opt);
+  }
+}
+
+function mostrarEquipos(lista) {
+  var div = document.getElementById("equipos");
+  div.innerHTML = "";
+  for (var i = 0; i < lista.length; i++) {
+    var e = lista[i];
+    div.innerHTML += "<div class='partido'>" +
+      "<div class='equipos'>" + e.flag_icon + " " + e.name + "</div>" +
+      "<div class='info'>Grupo " + e.group + " - " + e.confed + "</div>" +
+      "</div>";
+  }
+}
+
+function aplicarFiltrosEquipos() {
+  var paiSel = document.getElementById("filtroPais").value;
+  var grupoSel = document.getElementById("filtroGrupo").value;
+  var resultado = [];
+
+  for (var i = 0; i < equiposData.length; i++) {
+    var e = equiposData[i];
+    var coincidePais = paiSel == "" || e.name == paiSel;
+    var coincideGrupo = grupoSel == "" || e.group == grupoSel;
+    if (coincidePais && coincideGrupo) {
+      resultado.push(e);
+    }
+  }
+
+  mostrarEquipos(resultado);
+}
+
+var btnFiltrarEquipos = document.getElementById("btnFiltrarEquipos");
+var panelFiltrosEquipos = document.getElementById("panelFiltrosEquipos");
+
+btnFiltrarEquipos.addEventListener("click", function() {
+  var visible = panelFiltrosEquipos.style.display == "block";
+  panelFiltrosEquipos.style.display = visible ? "none" : "block";
+});
+
+document.getElementById("filtroPais").addEventListener("change", aplicarFiltrosEquipos);
+document.getElementById("filtroGrupo").addEventListener("change", aplicarFiltrosEquipos);
+
+document.getElementById("btnLimpiarFiltrosEquipos").addEventListener("click", function() {
+  document.getElementById("filtroPais").value = "";
+  document.getElementById("filtroGrupo").value = "";
+  mostrarEquipos(equiposData);
+});
 
 
 var clave = "123";

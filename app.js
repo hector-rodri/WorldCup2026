@@ -1,3 +1,49 @@
+var idiomaActual = "es";
+
+function t(clave) {
+  return traducciones[idiomaActual][clave] || clave;
+}
+
+function cambiarIdioma(idioma) {
+  idiomaActual = idioma;
+
+  var elementos = document.querySelectorAll("[data-i18n]");
+  for (var i = 0; i < elementos.length; i++) {
+    var key = elementos[i].getAttribute("data-i18n");
+    if (traducciones[idioma][key]) {
+      elementos[i].textContent = traducciones[idioma][key];
+    }
+  }
+
+  var placeholders = document.querySelectorAll("[data-i18n-placeholder]");
+  for (var i = 0; i < placeholders.length; i++) {
+    var key = placeholders[i].getAttribute("data-i18n-placeholder");
+    if (traducciones[idioma][key]) {
+      placeholders[i].placeholder = traducciones[idioma][key];
+    }
+  }
+
+  var grupoOpts = document.querySelectorAll("[data-grupo]");
+  for (var i = 0; i < grupoOpts.length; i++) {
+    grupoOpts[i].textContent = t("grupo") + " " + grupoOpts[i].getAttribute("data-grupo");
+  }
+
+  document.title = t("titulo");
+  document.documentElement.lang = idioma;
+
+  document.getElementById("btnEs").classList.remove("activo");
+  document.getElementById("btnCa").classList.remove("activo");
+  document.getElementById("btnEn").classList.remove("activo");
+  document.getElementById("btn" + idioma.charAt(0).toUpperCase() + idioma.slice(1)).classList.add("activo");
+
+  if (partidos.length > 0) {
+    aplicarFiltros();
+  }
+  if (equiposCargados) {
+    aplicarFiltrosEquipos();
+  }
+}
+
 function verSeccion(nombre) {
   document.getElementById("seccionPartidos").style.display = "none";
   document.getElementById("seccionJugadores").style.display = "none";
@@ -57,8 +103,8 @@ function mostrar(lista) {
     var p = lista[i];
     div.innerHTML += "<div class='partido'>" +
       "<div class='equipos'>" + p.team1 + " - " + p.team2 + "</div>" +
-      "<div class='info'>" + p.date + " a las " + p.time + "</div>" +
-      "<div class='info'>Estadio: " + p.ground + "</div>" +
+      "<div class='info'>" + p.date + " " + t("aLas") + " " + p.time + "</div>" +
+      "<div class='info'>" + t("estadio") + ": " + p.ground + "</div>" +
       "</div>";
   }
 }
@@ -147,7 +193,8 @@ function poblarFiltrosEquipos() {
   for (var i = 0; i < grupos.length; i++) {
     var opt = document.createElement("option");
     opt.value = grupos[i];
-    opt.textContent = "Grupo " + grupos[i];
+    opt.setAttribute("data-grupo", grupos[i]);
+    opt.textContent = t("grupo") + " " + grupos[i];
     selectGrupo.appendChild(opt);
   }
 }
@@ -159,7 +206,7 @@ function mostrarEquipos(lista) {
     var e = lista[i];
     div.innerHTML += "<div class='partido'>" +
       "<div class='equipos'>" + e.flag_icon + " " + e.name + "</div>" +
-      "<div class='info'>Grupo " + e.group + " - " + e.confed + "</div>" +
+      "<div class='info'>" + t("grupo") + " " + e.group + " - " + e.confed + "</div>" +
       "</div>";
   }
 }
@@ -209,7 +256,7 @@ botonJugadores.addEventListener("click", function() {
   if (nombre == "") {
     return;
   }
-  document.getElementById("jugadores").innerHTML = "Buscando...";
+  document.getElementById("jugadores").innerHTML = t("buscando");
   buscarEquipo(nombre);
 });
 
@@ -222,20 +269,45 @@ function buscarEquipo(nombre) {
     })
     .then(function(datos) {
       if (datos.teams == null) {
-        document.getElementById("jugadores").innerHTML = "No se ha encontrado ese pais.";
+        document.getElementById("jugadores").innerHTML = t("noEncontradoPais");
         return;
       }
 
-      var equipo = null;
+      var equiposSoccer = [];
       for (var i = 0; i < datos.teams.length; i++) {
         if (datos.teams[i].strSport == "Soccer") {
-          equipo = datos.teams[i];
+          equiposSoccer.push(datos.teams[i]);
+        }
+      }
+
+      var equipo = null;
+
+      // 1. Coincidencia exacta de nombre
+      for (var i = 0; i < equiposSoccer.length; i++) {
+        if (equiposSoccer[i].strTeam.toLowerCase() == nombre.toLowerCase()) {
+          equipo = equiposSoccer[i];
           break;
         }
       }
 
+      // 2. Liga internacional (selección nacional)
       if (equipo == null) {
-        document.getElementById("jugadores").innerHTML = "No se ha encontrado una seleccion.";
+        for (var i = 0; i < equiposSoccer.length; i++) {
+          var liga = equiposSoccer[i].strLeague || "";
+          if (liga.toLowerCase().indexOf("international") != -1) {
+            equipo = equiposSoccer[i];
+            break;
+          }
+        }
+      }
+
+      // 3. Fallback al primero de Soccer
+      if (equipo == null && equiposSoccer.length > 0) {
+        equipo = equiposSoccer[0];
+      }
+
+      if (equipo == null) {
+        document.getElementById("jugadores").innerHTML = t("noEncontradoSeleccion");
         return;
       }
 
@@ -254,7 +326,7 @@ function buscarJugadores(id, nombre) {
       var jugadores = datos.player;
 
       if (jugadores == null) {
-        document.getElementById("jugadores").innerHTML = "No hay jugadores para " + nombre + ".";
+        document.getElementById("jugadores").innerHTML = t("noJugadores") + " " + nombre + ".";
         return;
       }
 
@@ -266,7 +338,7 @@ function buscarJugadores(id, nombre) {
           html += "<img src='" + j.strThumb + "/preview' width='50'> ";
         }
         html += "<div class='equipos'>" + j.strPlayer + "</div>";
-        html += "<div class='info'>" + (j.strPosition || "Sin posicion") + "</div>";
+        html += "<div class='info'>" + (j.strPosition || t("sinPosicion")) + "</div>";
         html += "</div>";
       }
       document.getElementById("jugadores").innerHTML = html;

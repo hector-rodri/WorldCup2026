@@ -83,3 +83,49 @@ button {
 img {
   vertical-align: middle;
 }
+
+#selectorIdioma {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 100;
+}
+
+#selectorIdioma button {
+  padding: 5px 10px;
+  margin-right: 3px;
+  background-color: #ccc;
+  color: #333;
+  border: 1px solid #999;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#selectorIdioma button.activo {
+  background-color: #006633;
+  color: white;
+  border-color: #006633;
+}
+
+#selectorIdioma {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 100;
+}
+
+#selectorIdioma button {
+  padding: 5px 10px;
+  margin-right: 3px;
+  background-color: #ccc;
+  color: #333;
+  border: 1px solid #999;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#selectorIdioma button.activo {
+  background-color: #006633;
+  color: white;
+  border-color: #006633;
+}

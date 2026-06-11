@@ -3,53 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Mundial 2026</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Mundial 2026</h1>
+  <div id="selectorIdioma">
+    <button id="btnEs" onclick="cambiarIdioma('es')" class="activo">ES</button>
+    <button id="btnCa" onclick="cambiarIdioma('ca')">CA</button>
+    <button id="btnEn" onclick="cambiarIdioma('en')">EN</button>
+  </div>
+
+  <h1 data-i18n="titulo">Mundial 2026</h1>
 
   <div id="menu">
-    <button onclick="verSeccion('partidos')">Partidos</button>
-    <button onclick="verSeccion('jugadores')">Jugadores</button>
-    <button onclick="verSeccion('equipos')">Equipos</button>
+    <button onclick="verSeccion('partidos')" data-i18n="menuPartidos">Partidos</button>
+    <button onclick="verSeccion('jugadores')" data-i18n="menuJugadores">Jugadores</button>
+    <button onclick="verSeccion('equipos')" data-i18n="menuEquipos">Equipos</button>
   </div>
 
   <div id="seccionPartidos">
-    <h2>Partidos</h2>
+    <h2 data-i18n="secPartidos">Partidos</h2>
     <div id="barraPartidos">
-      <input type="text" id="buscarPartido" placeholder="Buscar equipo...">
-      <button id="btnFiltrar">Filtrar</button>
+      <input type="text" id="buscarPartido" placeholder="Buscar equipo..." data-i18n-placeholder="buscarEquipoPlaceholder">
+      <button id="btnFiltrar" data-i18n="btnFiltrar">Filtrar</button>
     </div>
     <div id="panelFiltros">
-      <label>Fecha: <input type="date" id="filtroFecha"></label>
-      <label>Estadio: <select id="filtroEstadio"><option value="">Todos los estadios</option></select></label>
-      <button id="btnLimpiarFiltros">Limpiar</button>
+      <label><span data-i18n="labelFecha">Fecha:</span> <input type="date" id="filtroFecha"></label>
+      <label><span data-i18n="labelEstadio">Estadio:</span> <select id="filtroEstadio"><option value="" data-i18n="todosEstadios">Todos los estadios</option></select></label>
+      <button id="btnLimpiarFiltros" data-i18n="btnLimpiar">Limpiar</button>
     </div>
     <div id="partidos">Cargando partidos...</div>
   </div>
 
   <div id="seccionJugadores">
-    <h2>Jugadores</h2>
-    <p>Escribe un pais EN INGLES (Spain, Argentina, Brazil, France...)</p>
+    <h2 data-i18n="secJugadores">Jugadores</h2>
+    <p data-i18n="instruccionJugadores">Escribe un pais EN INGLES (Spain, Argentina, Brazil, France...)</p>
     <input type="text" id="pais" placeholder="Spain">
-    <button id="btnBuscarJugadores">Buscar</button>
+    <button id="btnBuscarJugadores" data-i18n="btnBuscar">Buscar</button>
     <div id="jugadores"></div>
   </div>
 
   <div id="seccionEquipos">
-    <h2>Equipos</h2>
+    <h2 data-i18n="secEquipos">Equipos</h2>
     <div id="barraEquipos">
-      <button id="btnFiltrarEquipos">Filtrar</button>
+      <button id="btnFiltrarEquipos" data-i18n="btnFiltrar">Filtrar</button>
     </div>
     <div id="panelFiltrosEquipos">
-      <label>País: <select id="filtroPais"><option value="">Todos los países</option></select></label>
-      <label>Grupo: <select id="filtroGrupo"><option value="">Todos los grupos</option></select></label>
-      <button id="btnLimpiarFiltrosEquipos">Limpiar</button>
+      <label><span data-i18n="labelPais">País:</span> <select id="filtroPais"><option value="" data-i18n="todosPaises">Todos los países</option></select></label>
+      <label><span data-i18n="labelGrupo">Grupo:</span> <select id="filtroGrupo"><option value="" data-i18n="todosGrupos">Todos los grupos</option></select></label>
+      <button id="btnLimpiarFiltrosEquipos" data-i18n="btnLimpiar">Limpiar</button>
     </div>
     <div id="equipos">Cargando equipos...</div>
   </div>
 
+  <script src="translations.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
